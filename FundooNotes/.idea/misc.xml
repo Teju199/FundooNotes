@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Ashu/Bridgelabz/FundooNotes/app/src/main/res/drawable/btndesign.xml" value="0.1865" />
+        <entry key="..\:/Ashu/Bridgelabz/FundooNotes/app/src/main/res/drawable/profileicondesign.xml" value="0.1865" />
+        <entry key="..\:/Ashu/Bridgelabz/FundooNotes/app/src/main/res/drawable/toolbardesign.xml" value="0.1865" />
+        <entry key="..\:/Ashu/Bridgelabz/FundooNotes/app/src/main/res/layout/activity_notes.xml" value="0.1" />
+        <entry key="..\:/Ashu/Bridgelabz/FundooNotes/app/src/main/res/layout/fragment_login.xml" value="0.16666666666666666" />
+        <entry key="..\:/Ashu/Bridgelabz/FundooNotes/app/src/main/res/layout/fragment_notes.xml" value="0.1" />
+        <entry key="..\:/Ashu/Bridgelabz/FundooNotes/app/src/main/res/layout/fragment_register.xml" value="0.14666666666666667" />
+        <entry key="..\:/Ashu/Bridgelabz/FundooNotes/app/src/main/res/layout/nav_headerfile.xml" value="0.1796875" />
+        <entry key="..\:/Ashu/Bridgelabz/FundooNotes/app/src/main/res/layout/navheaderfile.xml" value="0.1796875" />
+        <entry key="..\:/Ashu/Bridgelabz/FundooNotes/app/src/main/res/menu/iconMenu.xml" value="0.1796875" />
+        <entry key="..\:/Ashu/Bridgelabz/FundooNotes/app/src/main/res/menu/iconmenu.xml" value="0.1796875" />
+        <entry key="..\:/Ashu/Bridgelabz/FundooNotes/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1865" />
+        <entry key="..\:/Ashu/Bridgelabz/FundooNotes/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1865" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

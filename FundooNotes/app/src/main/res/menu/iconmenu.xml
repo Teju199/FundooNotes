@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/menu_notes"
+        android:icon="@drawable/ic_outline_lightbulb_24"
+        android:title="notes"/>
+
+    <item android:id="@+id/menu_remainder"
+        android:icon="@drawable/ic_outline_notifications_24"
+        android:title="remainder"/>
+
+    <item android:id="@+id/menu_label"
+        android:icon="@drawable/ic_outline_label_24"
+        android:title="label"/>
+
+    <item android:id="@+id/menu_addLabel"
+        android:icon="@drawable/ic_outline_new_addlabel_24"
+        android:title="addLabel"/>
+
+    <item android:id="@+id/menu_archive"
+        android:icon="@drawable/ic_outline_archive_24"
+        android:title="archive"/>
+
+    <item android:id="@+id/menu_trash"
+        android:icon="@drawable/ic_outline_delete_24"
+        android:title="trash"/>
+
+    <item android:id="@+id/menu_settings"
+        android:icon="@drawable/ic_outline_settings_24"
+        android:title="settings"/>
+
+
+</menu>
