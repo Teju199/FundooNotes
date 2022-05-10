@@ -3,6 +3,21 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Ashu/Bridgelabz/AndoridProject2/FundooNotes/app/src/main/res/drawable/buttondesign.xml" value="0.1855" />
+        <entry key="..\:/Ashu/Bridgelabz/AndoridProject2/FundooNotes/app/src/main/res/drawable/edittextdesign.xml" value="0.1865" />
+        <entry key="..\:/Ashu/Bridgelabz/AndoridProject2/FundooNotes/app/src/main/res/drawable/ic_baseline_account_circle_24.xml" value="0.1865" />
+        <entry key="..\:/Ashu/Bridgelabz/AndoridProject2/FundooNotes/app/src/main/res/drawable/ic_baseline_person_24.xml" value="0.1855" />
+        <entry key="..\:/Ashu/Bridgelabz/AndoridProject2/FundooNotes/app/src/main/res/drawable/rectanglebox.xml" value="0.1865" />
+        <entry key="..\:/Ashu/Bridgelabz/AndoridProject2/FundooNotes/app/src/main/res/drawable/textviewdesign.xml" value="0.1855" />
+        <entry key="..\:/Ashu/Bridgelabz/AndoridProject2/FundooNotes/app/src/main/res/drawable/toolbardesign.xml" value="0.1865" />
+        <entry key="..\:/Ashu/Bridgelabz/AndoridProject2/FundooNotes/app/src/main/res/layout/activity_main.xml" value="0.1796875" />
+        <entry key="..\:/Ashu/Bridgelabz/AndoridProject2/FundooNotes/app/src/main/res/layout/activity_notes.xml" value="0.1" />
+        <entry key="..\:/Ashu/Bridgelabz/AndoridProject2/FundooNotes/app/src/main/res/layout/fragment_forgot_password.xml" value="0.1796875" />
+        <entry key="..\:/Ashu/Bridgelabz/AndoridProject2/FundooNotes/app/src/main/res/layout/fragment_login.xml" value="0.1" />
+        <entry key="..\:/Ashu/Bridgelabz/AndoridProject2/FundooNotes/app/src/main/res/layout/fragment_register.xml" value="0.1" />
+        <entry key="..\:/Ashu/Bridgelabz/AndoridProject2/FundooNotes/app/src/main/res/layout/fragment_user_profile.xml" value="0.22" />
+        <entry key="..\:/Ashu/Bridgelabz/AndoridProject2/FundooNotes/app/src/main/res/layout/navheaderfile.xml" value="0.1796875" />
+        <entry key="..\:/Ashu/Bridgelabz/AndoridProject2/FundooNotes/app/src/main/res/menu/iconmenu.xml" value="0.1796875" />
         <entry key="..\:/Ashu/Bridgelabz/FundooNotes/app/src/main/res/drawable/btndesign.xml" value="0.1865" />
         <entry key="..\:/Ashu/Bridgelabz/FundooNotes/app/src/main/res/drawable/profileicondesign.xml" value="0.1865" />
         <entry key="..\:/Ashu/Bridgelabz/FundooNotes/app/src/main/res/drawable/toolbardesign.xml" value="0.1865" />

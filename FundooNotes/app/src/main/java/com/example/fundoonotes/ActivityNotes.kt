@@ -1,14 +1,13 @@
 package com.example.fundoonotes
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
-import android.widget.Toolbar
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.core.view.GravityCompat
+import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.navigation.NavigationView
 
 
@@ -19,6 +18,7 @@ class ActivityNotes : AppCompatActivity() {
         setContentView(R.layout.activity_notes)
 
         val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
+        val mProfileIcon: ImageView = findViewById(R.id.profileIcon)
 
         setSupportActionBar(toolbar)
 
@@ -38,28 +38,17 @@ class ActivityNotes : AppCompatActivity() {
             drawerLayout.openDrawer(nav)
         }
 
+        mProfileIcon.setOnClickListener(View.OnClickListener {
+            getSupportFragmentManager().beginTransaction().add(R.id.fragmentcontainer1,
+                FragmentUserProfile()).commit()
+        })
+
+
     }
 
         override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-            when(item.itemId) {
-                R.id.menu_notes -> {
-
-                }
-
-                R.id.menu_remainder ->{
-
-                }
-
-            }
-            return true
-        }
-
-
-        /*nav.setNavigationItemSelectedListener(NavigationView.OnNavigationItemSelectedListener
-        {
-            when(it.itemId){
-
+            when (item.itemId) {
                 R.id.menu_notes -> {
 
                 }
@@ -76,7 +65,7 @@ class ActivityNotes : AppCompatActivity() {
 
                 }
 
-                R.id.menu_archive ->{
+                R.id.menu_archive -> {
 
                 }
 
@@ -87,11 +76,9 @@ class ActivityNotes : AppCompatActivity() {
                 R.id.menu_settings -> {
 
                 }
+
             }
-            return@OnNavigationItemSelectedListener false
-        })*/
-
-
-
+            return true
+        }
 
 }

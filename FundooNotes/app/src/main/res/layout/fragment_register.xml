@@ -38,20 +38,50 @@
 
     </LinearLayout>
 
+
+
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/centerline2"
         android:layout_marginBottom="90dp"
-        android:id="@+id/email"
+        android:hint="Enter your full name"
+        android:id="@+id/name"
         android:layout_marginRight="30dp"
-        android:layout_marginLeft="30dp">
+        android:layout_marginLeft="30dp"
+        app:hintEnabled="true">
+
+    <EditText
+        android:id="@+id/fullName"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:paddingLeft="10dp"
+        android:background="@drawable/edittextdesign"
+        android:inputType="textEmailAddress"
+        android:textColorHint="@color/white"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck">
+
+    </EditText>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/centerline2"
+        android:hint="Enter the email"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="20dp"
+        app:hintEnabled="true">
 
         <EditText
             android:id="@+id/signupemail"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter the email"
+            android:layout_height="40dp"
+            android:paddingLeft="10dp"
+            android:background="@drawable/edittextdesign"
             android:inputType="textEmailAddress"
             android:textColorHint="@color/white"
             tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck">
@@ -62,19 +92,22 @@
 
     <com.google.android.material.textfield.TextInputLayout
 
+        android:id="@+id/password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/centerline2"
-        android:layout_marginBottom="20dp"
-        android:id="@+id/password"
-        android:layout_marginRight="30dp"
-        android:layout_marginLeft="30dp">
+        android:layout_below="@id/centerline2"
+        android:hint="Enter the password"
+        app:hintEnabled="true"
+        android:layout_marginLeft="30dp"
+
+        android:layout_marginRight="30dp">
 
         <EditText
             android:id="@+id/signuppassword"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter the password"
+            android:layout_height="40dp"
+            android:paddingLeft="10dp"
+            android:background="@drawable/edittextdesign"
             android:inputType="textMultiLine"
             android:textColorHint="@color/white"
             tools:ignore="NotSibling,SpeakableTextPresentCheck,TouchTargetSizeCheck">
@@ -89,15 +122,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/centerline2"
+        android:layout_marginTop="70dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:layout_marginBottom="20dp">
 
         <EditText
             android:id="@+id/confirmpassword"
+            android:paddingLeft="10dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Confirm Password"
+            android:layout_height="40dp"
+            android:background="@drawable/edittextdesign"
+            android:hint="Confirm password"
             android:inputType="textMultiLine"
             android:textColorHint="@color/white"
             tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck">
@@ -111,8 +147,8 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_below="@id/centerline2"
-        android:layout_marginTop="80dp"
         android:layout_marginLeft="30dp"
+        android:layout_marginTop="160dp"
         android:layout_marginRight="30dp"
         android:background="@drawable/btndesign">
 
@@ -133,10 +169,10 @@
         android:id="@+id/backtologin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/register"
-        android:layout_marginTop="30dp"
-        android:text="Want to login?"
+        android:layout_below="@+id/centerline2"
+        android:layout_marginTop="240dp"
         android:gravity="center"
+        android:text="Already have an account? Login"
         android:textColor="@color/white"
         android:textSize="20sp">
 

@@ -36,7 +36,6 @@ class FragmentLogin : Fragment() {
 
         val view: View = inflater.inflate(R.layout.fragment_login, container, false)
 
-
         val mLoginEmail: EditText = view.findViewById(R.id.loginemail)
         val mLoginPassword: EditText = view.findViewById(R.id.loginpassword)
         val mLoginBtn: RelativeLayout = view.findViewById(R.id.login)

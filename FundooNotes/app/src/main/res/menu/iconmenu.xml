@@ -2,31 +2,31 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/menu_notes"
         android:icon="@drawable/ic_outline_lightbulb_24"
-        android:title="notes"/>
+        android:title="Notes"/>
 
     <item android:id="@+id/menu_remainder"
         android:icon="@drawable/ic_outline_notifications_24"
-        android:title="remainder"/>
+        android:title="Remainder"/>
 
     <item android:id="@+id/menu_label"
         android:icon="@drawable/ic_outline_label_24"
-        android:title="label"/>
+        android:title="Label"/>
 
     <item android:id="@+id/menu_addLabel"
         android:icon="@drawable/ic_outline_new_addlabel_24"
-        android:title="addLabel"/>
+        android:title="Add Label"/>
 
     <item android:id="@+id/menu_archive"
         android:icon="@drawable/ic_outline_archive_24"
-        android:title="archive"/>
+        android:title="Archive"/>
 
     <item android:id="@+id/menu_trash"
         android:icon="@drawable/ic_outline_delete_24"
-        android:title="trash"/>
+        android:title="Trash"/>
 
     <item android:id="@+id/menu_settings"
         android:icon="@drawable/ic_outline_settings_24"
-        android:title="settings"/>
+        android:title="Settings"/>
 
 
 </menu>

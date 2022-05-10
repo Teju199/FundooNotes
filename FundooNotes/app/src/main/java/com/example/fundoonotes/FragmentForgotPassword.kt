@@ -49,7 +49,10 @@ class FragmentForgotPassword : Fragment() {
                 firebaseAuth.sendPasswordResetEmail(emailEntered).addOnCompleteListener { task ->
 
                     if (task.isSuccessful()) {
-                        Log.d(TAG, "Email sent.")
+                        Toast.makeText(
+                            getContext(), "Password reset email sent.",
+                            Toast.LENGTH_SHORT
+                        ).show()
 
                         val transaction = activity?.supportFragmentManager?.beginTransaction()
                         if (transaction != null) {
@@ -60,7 +63,7 @@ class FragmentForgotPassword : Fragment() {
 
                     } else {
                         Toast.makeText(
-                            getContext(), "Account does not exist",
+                            getContext(), "Email failed.",
                             Toast.LENGTH_SHORT
                         ).show()
                     }

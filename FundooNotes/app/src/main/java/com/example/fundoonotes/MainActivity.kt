@@ -28,7 +28,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         addFragment()
     }
 
@@ -36,16 +35,7 @@ class MainActivity : AppCompatActivity() {
         fragment = FragmentLogin()
         fragmentManager = getSupportFragmentManager()
         fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.add(R.id.fragmentcontainer, fragment)
-        fragmentTransaction.commit()
-    }
-
-    private fun replaceFragment() {
-        fragment = FragmentLogin()
-        fragmentManager = getSupportFragmentManager()
-        fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.addToBackStack(null)
-        fragmentTransaction.replace(R.id.fragmentcontainer, fragment)
+        fragmentTransaction.add(R.id.fragmentcontainer, FragmentLogin())
         fragmentTransaction.commit()
     }
 }
