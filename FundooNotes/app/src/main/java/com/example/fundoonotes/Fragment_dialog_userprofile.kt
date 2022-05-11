@@ -1,14 +1,11 @@
 package com.example.fundoonotes
 
-import android.app.Activity
 import android.app.Activity.RESULT_OK
-import android.app.appsearch.StorageInfo
+import android.app.ProgressDialog
 import android.content.Intent
-import android.content.Intent.getIntent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.text.Layout
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -18,21 +15,16 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import com.google.android.gms.tasks.OnFailureListener
-import com.google.android.gms.tasks.OnSuccessListener
-import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.local.QueryResult
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
-import org.w3c.dom.Text
 
-class FragmentUserProfile : Fragment() {
+class Fragment_dialog_userprofile : Fragment() {
     lateinit var firebaseAuth: FirebaseAuth
     private val PICK_IMAGE: Int = 1
     lateinit var uploadTask: UploadTask
@@ -49,7 +41,7 @@ class FragmentUserProfile : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val view: View = inflater.inflate(R.layout.fragment_user_profile, container, false)
+        val view: View = inflater.inflate(R.layout.fragment_dialog_userprofile, container, false)
 
         var mFullName: TextView = view.findViewById(R.id.FullName)
         val memail: TextView = view.findViewById(R.id.email)
@@ -67,6 +59,9 @@ class FragmentUserProfile : Fragment() {
         val userID: String? = firebaseAuth.getCurrentUser()?.getUid()
         val currentUser = firebaseAuth.getCurrentUser()
         val documentReference : String ?= firebaseAuth.currentUser?.uid
+        val dialog: ProgressDialog = ProgressDialog(context)
+
+        dialog.setTitle("Profile")
 
         fstore.collection("users").get().addOnCompleteListener {
             val result: StringBuffer = StringBuffer()
@@ -97,7 +92,7 @@ class FragmentUserProfile : Fragment() {
         })
 
         backButton.setOnClickListener {
-            val intent: Intent = Intent(getActivity(), ActivityNotes::class.java)
+            val intent: Intent = Intent(getActivity(), ActivityDashboard::class.java)
             startActivity(intent)
         }
 

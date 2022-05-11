@@ -2,9 +2,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/userprofiledesign">
+    android:layout_width="320dp"
+    android:layout_height="500dp"
+    android:layout_marginTop="80dp"
+    android:layout_gravity="center_horizontal"
+    android:background="@drawable/dialogboxdesign">
 
     <RelativeLayout
 
@@ -15,25 +17,14 @@
 
     </RelativeLayout>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Account Information"
-        android:textColor="@color/white"
-        android:textSize="25sp"
-        android:layout_marginTop="30dp"
-        android:gravity="center">
-
-    </TextView>
-
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profile_image"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="wrap_content"
+        android:layout_height="130dp"
         android:layout_above="@+id/centerline3"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="30dp"
         android:layout_marginBottom="80dp"
         android:src="@drawable/profile">
 
@@ -48,11 +39,12 @@
         android:layout_marginEnd="30dp"
         android:background="@drawable/textviewdesign"
         android:drawablePadding="10dp"
-        android:paddingLeft="10dp"
+        android:fontFamily="@font/aclonica"
+        android:paddingLeft="20dp"
         android:text="Full Name"
         android:textColor="@color/white"
         android:textSize="20dp"
-        android:textStyle="bold" />
+        android:textStyle="normal" />
 
 
     <TextView
@@ -81,22 +73,22 @@
     </ImageView>
 
 
-
     <TextView
         android:id="@+id/email"
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:layout_below="@id/centerline3"
         android:layout_marginStart="30dp"
-        android:drawablePadding="10dp"
         android:layout_marginTop="50dp"
         android:layout_marginEnd="30dp"
         android:background="@drawable/textviewdesign"
-        android:textColor="@color/white"
-        android:paddingLeft="10dp"
+        android:drawablePadding="10dp"
+        android:fontFamily="@font/aclonica"
+        android:paddingLeft="20dp"
         android:text="Email Address"
+        android:textColor="@color/white"
         android:textSize="20dp"
-        android:textStyle="bold"/>
+        android:textStyle="normal" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -120,37 +112,48 @@
 
     </ImageView>
 
-
-    <Button
-        android:id="@+id/logout"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_below="@id/centerline3"
-        android:layout_marginHorizontal="100dp"
-        android:layout_marginTop="200dp"
-        android:background="@drawable/buttondesign"
-        android:text="Logout"
-        android:textColor="@color/white"
-        android:textSize="12sp" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/changeProfileImage"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_below="@id/centerline3"
-        android:layout_marginHorizontal="100dp"
-        android:layout_marginTop="120dp"
-        android:background="@drawable/buttondesign"
-        android:text="CHANGE PROFILE"
-        android:textColor="@color/white"
-        android:textSize="12sp" />
+        <Button
+            android:id="@+id/logout"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/email"
+            android:layout_marginHorizontal="100dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="380dp"
+            android:background="@drawable/buttondesign"
+            android:fontFamily="@font/architects_daughter"
+            android:text="Logout"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/changeProfileImage"
+            android:layout_width="120dp"
+            android:layout_height="50dp"
+            android:layout_below="@id/email"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="380dp"
+            android:background="@drawable/buttondesign"
+            android:fontFamily="@font/architects_daughter"
+            android:text="CHANGE PROFILE"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
+
+
+    </LinearLayout>
+
 
     <ImageView
         android:id="@+id/backButton"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="30dp"
         android:src="@drawable/ic_baseline_arrow_back_24" />
 
 

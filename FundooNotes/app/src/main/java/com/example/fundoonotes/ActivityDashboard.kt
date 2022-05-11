@@ -6,16 +6,17 @@ import android.widget.ImageView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.navigation.NavigationView
 
 
-class ActivityNotes : AppCompatActivity() {
+class ActivityDashboard : AppCompatActivity() {
+
+    lateinit var adapter: Adapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_notes)
+        setContentView(R.layout.activity_dashboard)
 
         val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
         val mProfileIcon: ImageView = findViewById(R.id.profileIcon)
@@ -25,10 +26,12 @@ class ActivityNotes : AppCompatActivity() {
         val nav: NavigationView = findViewById(R.id.navigationMenu)
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer)
 
+
+        val noteLists: RecyclerView = findViewById(R.id.notesList)
+
         val toggle: ActionBarDrawerToggle = ActionBarDrawerToggle(
             this, drawerLayout, toolbar, R.string.open,
-            R.string.close
-        )
+            R.string.close)
 
         drawerLayout.addDrawerListener(toggle)
 
@@ -40,9 +43,10 @@ class ActivityNotes : AppCompatActivity() {
 
         mProfileIcon.setOnClickListener(View.OnClickListener {
             getSupportFragmentManager().beginTransaction().add(R.id.fragmentcontainer1,
-                FragmentUserProfile()).commit()
+                Fragment_dialog_userprofile()).commit()
         })
 
+        
 
     }
 

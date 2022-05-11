@@ -3,7 +3,6 @@ package com.example.fundoonotes
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.system.Os.close
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -31,8 +30,7 @@ class FragmentLogin : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+        savedInstanceState: Bundle?): View? {
 
         val view: View = inflater.inflate(R.layout.fragment_login, container, false)
 
@@ -141,7 +139,7 @@ class FragmentLogin : Fragment() {
                 val personPhoto: Uri? = acct.getPhotoUrl()
             }
 
-            val intent: Intent = Intent(getActivity(), ActivityNotes::class.java)
+            val intent: Intent = Intent(getActivity(), ActivityDashboard::class.java)
             startActivity(intent)
 
         } catch (e: ApiException) {
@@ -162,7 +160,7 @@ class FragmentLogin : Fragment() {
                 ).show()
 
                 getActivity()?.getFragmentManager()?.popBackStack()
-                val intent: Intent = Intent(getActivity(), ActivityNotes::class.java)
+                val intent: Intent = Intent(getActivity(), ActivityDashboard::class.java)
                 startActivity(intent)
             }
 

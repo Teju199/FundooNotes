@@ -6,34 +6,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawer"
     tools:openDrawer="start"
-    tools:context=".ActivityNotes">
+    tools:context=".ActivityDashboard">
 
+
+    <include
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        layout="@layout/content_main"/>
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/toolbardesign"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:title="Notes"
-            app:titleTextColor="@color/white">
-
-        </androidx.appcompat.widget.Toolbar>
 
         <ImageView
             android:id="@+id/profileIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="35dp"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="25dp"
+            android:layout_marginTop="35dp"
+            android:layout_marginEnd="35dp"
             android:background="@drawable/ic_baseline_account_circle_24">
 
         </ImageView>
@@ -75,6 +67,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/fragmentcontainer1"/>
+
 
 
 </androidx.drawerlayout.widget.DrawerLayout>
