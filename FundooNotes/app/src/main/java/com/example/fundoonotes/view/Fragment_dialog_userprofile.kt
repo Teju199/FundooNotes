@@ -1,4 +1,4 @@
-package com.example.fundoonotes
+package com.example.fundoonotes.view
 
 import android.app.Activity.RESULT_OK
 import android.app.ProgressDialog
@@ -10,12 +10,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
-import com.google.android.gms.tasks.OnFailureListener
+import android.widget.*
+import androidx.lifecycle.ViewModelProvider
+import com.example.fundoonotes.ActivityDashboard
+import com.example.fundoonotes.R
+import com.example.fundoonotes.model.User
+import com.example.fundoonotes.model.UserAuthService
+import com.example.fundoonotes.viewmodel.SharedViewModel
+import com.example.fundoonotes.viewmodel.SharedViewModelFactory
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -28,12 +32,13 @@ class Fragment_dialog_userprofile : Fragment() {
     lateinit var firebaseAuth: FirebaseAuth
     private val PICK_IMAGE: Int = 1
     lateinit var uploadTask: UploadTask
-    lateinit var firebaseStorage: FirebaseStorage
     lateinit var storageReference: StorageReference
     lateinit var fstore: FirebaseFirestore
     lateinit var documentReference: DocumentReference
     lateinit var profileImage: CircleImageView
     lateinit var imageUri: Uri
+    lateinit var userAuthService: UserAuthService
+    lateinit var firebaseStorage: FirebaseStorage
 
 
     override fun onCreateView(
@@ -50,26 +55,30 @@ class Fragment_dialog_userprofile : Fragment() {
         val PICK_IMAGE: Int = 1
         profileImage = view?.findViewById(R.id.profile_image)!!
         val backButton: ImageView = view.findViewById(R.id.backButton)
+        val sharedViewModel: SharedViewModel
 
 
         firebaseAuth = FirebaseAuth.getInstance()
         fstore = FirebaseFirestore.getInstance()
         firebaseStorage = FirebaseStorage.getInstance()
         storageReference = firebaseStorage.getReference()
-        val userID: String? = firebaseAuth.getCurrentUser()?.getUid()
-        val currentUser = firebaseAuth.getCurrentUser()
-        val documentReference : String ?= firebaseAuth.currentUser?.uid
+        userAuthService = UserAuthService()
         val dialog: ProgressDialog = ProgressDialog(context)
+        val userID: String? = firebaseAuth.currentUser?.uid
+        val user: FirebaseUser? = firebaseAuth.getCurrentUser()
+
 
         dialog.setTitle("Profile")
 
-        fstore.collection("users").get().addOnCompleteListener {
-            val result: StringBuffer = StringBuffer()
+        if (userID != null) {
+            fstore.collection("users").get().addOnCompleteListener {
 
-            if (it.isSuccessful()) {
-                for (document in it.result!!) {
-                    mFullName.setText(document.data.getValue("fullName").toString())
-                    memail.setText(document.data.getValue("email").toString())
+
+                if (it.isSuccessful()) {
+                    for (document in it.result!!) {
+                        mFullName.setText(document.data.getValue("fullName").toString())
+                        memail.setText(document.data.getValue("email").toString())
+                    }
                 }
             }
         }
@@ -79,25 +88,27 @@ class Fragment_dialog_userprofile : Fragment() {
                 .getCurrentUser()?.getUid()) + "/profile.jpg"
         )
 
-        profileRef.getDownloadUrl().addOnSuccessListener {
+        profileRef.getDownloadUrl().addOnSuccessListener{
             Picasso.get().load(it).into(profileImage)
         }
 
-        changeProfile.setOnClickListener(View.OnClickListener {
+        changeProfile.setOnClickListener(View.OnClickListener
+        {
             val openGalleryIntent: Intent = Intent(
                 Intent.ACTION_PICK, MediaStore.Images.Media
                     .EXTERNAL_CONTENT_URI
             )
+
             startActivityForResult(openGalleryIntent, PICK_IMAGE)
         })
 
-        backButton.setOnClickListener {
+        backButton.setOnClickListener{
             val intent: Intent = Intent(getActivity(), ActivityDashboard::class.java)
             startActivity(intent)
         }
 
 
-        mlogout.setOnClickListener {
+        mlogout.setOnClickListener{
             firebaseAuth.signOut()
             val transaction = activity?.supportFragmentManager?.beginTransaction()
             if (transaction != null) {
@@ -114,30 +125,33 @@ class Fragment_dialog_userprofile : Fragment() {
         if (requestCode == PICK_IMAGE) {
             if (resultCode == RESULT_OK) {
                 imageUri = data?.getData()!!
-                //profileImage?.setImageURI(imageUri)
 
                 if (imageUri != null) {
-                    uploadImageToFirebase(imageUri)
+                    userAuthService.uploadImageToFirebase(imageUri, profileImage)
                 }
             }
         }
     }
-
-    private fun uploadImageToFirebase(imageUri: Uri) {
-        val fileRef: StorageReference = storageReference.child(
-            "users/" + (firebaseAuth
-                .getCurrentUser()?.getUid()) + "/profile.jpg")
-
-        fileRef.putFile(imageUri).addOnSuccessListener {
-            Toast.makeText(getActivity(), "Image uploaded", Toast.LENGTH_SHORT).show()
-
-            fileRef.getDownloadUrl().addOnSuccessListener {
-                Picasso.get().load(imageUri).into(profileImage)
-            }
-
-        }.addOnFailureListener(OnFailureListener {
-            Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show()
-        })
-
-    }
 }
+
+/*private fun uploadImageToFirebase(imageUri: Uri) {
+    val fileRef: StorageReference = storageReference.child(
+        "users/" + (firebaseAuth
+            .getCurrentUser()?.getUid()) + "/profile.jpg")
+
+    fileRef.putFile(imageUri).addOnSuccessListener {
+        Toast.makeText(getActivity(), "Image uploaded", Toast.LENGTH_SHORT).show()
+
+        fileRef.getDownloadUrl().addOnSuccessListener {
+            Picasso.get().load(imageUri).into(profileImage)
+        }
+
+    }.addOnFailureListener(OnFailureListener {
+        Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show()
+    })
+
+}*/
+
+
+
+

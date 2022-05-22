@@ -1,4 +1,4 @@
-package com.example.fundoonotes
+package com.example.fundoonotes.view
 
 import android.content.Intent
 import android.net.Uri
@@ -12,6 +12,15 @@ import android.widget.EditText
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import com.example.fundoonotes.ActivityDashboard
+import com.example.fundoonotes.R
+import com.example.fundoonotes.model.UserAuthService
+import com.example.fundoonotes.viewmodel.LoginViewModel
+import com.example.fundoonotes.viewmodel.LoginViewModelFactory
+import com.example.fundoonotes.viewmodel.SharedViewModel
+import com.example.fundoonotes.viewmodel.SharedViewModelFactory
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -27,6 +36,8 @@ class FragmentLogin : Fragment() {
     var gso: GoogleSignInOptions? = null
     var gsc: GoogleSignInClient? = null
     val RC_SIGN_IN: Int = 100
+    private lateinit var loginViewModel: LoginViewModel
+    lateinit var sharedViewModel: SharedViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,6 +51,13 @@ class FragmentLogin : Fragment() {
         val mForgotPassword1: TextView = view.findViewById(R.id.forgotpassword1)
         val mGoToSignUp: RelativeLayout = view.findViewById(R.id.gotosignup)
         val mGoogleBtn: SignInButton = view.findViewById(R.id.googlebtn)
+        loginViewModel = ViewModelProvider(this, LoginViewModelFactory(UserAuthService()))
+            .get(LoginViewModel::class.java)
+
+        sharedViewModel = ViewModelProvider(
+            this,
+            SharedViewModelFactory(UserAuthService())
+        )[SharedViewModel::class.java]
 
         mGoogleBtn.setSize(SignInButton.SIZE_STANDARD)
 
@@ -84,19 +102,20 @@ class FragmentLogin : Fragment() {
                 ).show()
 
             } else {
+                loginViewModel.userLogin(email, password)
+                loginViewModel.loginStatus.observe(viewLifecycleOwner, Observer {
 
-                firebaseAuth!!.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener { task ->
+                    if(it.status){
+                        checkEmailVerification()
+                        Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+                        sharedViewModel.setGotoHomePageStatus(true)
 
-                        if (task.isSuccessful()) {
-                            checkEmailVerification()
-                        } else {
-                            Toast.makeText(
-                                getContext(), "Account does not exist",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
                     }
+                    else{
+                        Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+                        sharedViewModel.setGotoLoginPageStatus(true)
+                    }
+                })
             }
         })
         return view
@@ -105,7 +124,7 @@ class FragmentLogin : Fragment() {
     private fun getGSO(): GoogleSignInOptions {
 
         return GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestIdToken(("270965940065-uh19qjopcooor9uuaikts3kdl5sel4cv.apps.googleusercontent.com"))
             .requestEmail()
             .build()
     }
