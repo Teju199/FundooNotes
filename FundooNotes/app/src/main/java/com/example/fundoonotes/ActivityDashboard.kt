@@ -1,11 +1,18 @@
 package com.example.fundoonotes
 
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
-import android.view.*
+import android.view.MenuItem
+import android.view.View
 import android.widget.ImageView
+import androidx.appcompat.widget.SearchView
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.MenuItemCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -14,22 +21,21 @@ import com.example.fundoonotes.model.Note
 import com.example.fundoonotes.view.Fragment_dialog_userprofile
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
-import com.google.firebase.firestore.EventListener
 import java.util.*
-import kotlin.collections.ArrayList
 
 
-class ActivityDashboard : AppCompatActivity() {
 
-    lateinit var adapter: Adapter
+class ActivityDashboard() : AppCompatActivity() {
+
     lateinit var fstore: FirebaseFirestore
-    lateinit var title: String
-    lateinit var content: String
     lateinit var noteList: MutableList<Note>
     private lateinit var myAdapter: Adapter
     private lateinit var recyclerView: RecyclerView
+    private lateinit var userID: String
 
+    @SuppressLint("ResourceAsColor")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
@@ -43,28 +49,27 @@ class ActivityDashboard : AppCompatActivity() {
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer)
         val mAddNoteButton: FloatingActionButton = findViewById(R.id.addNoteFloatingBtn)
         val notesList: RecyclerView = findViewById(R.id.notesList)
-
-
         val fstore: FirebaseFirestore = FirebaseFirestore.getInstance()
+        //val menuItem: MenuItem = menu!!.findItem(R.id.searchIcon)
+        //val searchView: SearchView = MenuItemCompat.getActionView(menuItem) as SearchView
+        val searchView: SearchView = findViewById(R.id.searchIcon)
+
         recyclerView = findViewById(R.id.notesList)
 
-        recyclerView.setLayoutManager(StaggeredGridLayoutManager(
-            2,
-            StaggeredGridLayoutManager.VERTICAL))
+        //Grid view
+        recyclerView.setLayoutManager(StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL))
 
         notesList.setHasFixedSize(true)
-
         noteList = mutableListOf()
-        myAdapter = Adapter(noteList)
 
+        //sending noteList to Adapter
+        myAdapter = Adapter(noteList)
         recyclerView.adapter = myAdapter
 
-        eventChangeListener()
-
-        val toggle: ActionBarDrawerToggle = ActionBarDrawerToggle(
+        //Navigation Drawer setup
+        val toggle = ActionBarDrawerToggle(
             this, drawerLayout, toolbar, R.string.open,
-            R.string.close
-        )
+            R.string.close)
 
         toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.white))
 
@@ -75,8 +80,14 @@ class ActivityDashboard : AppCompatActivity() {
 
         toggle.setToolbarNavigationClickListener {
             drawerLayout.openDrawer(nav)
+
+            myAdapter.notifyDataSetChanged()
         }
 
+        //calling function to fetch data
+        getUserData(noteList)
+
+        //profile icon click
         mProfileIcon.setOnClickListener(View.OnClickListener {
             getSupportFragmentManager().beginTransaction().add(
                 R.id.fragmentcontainer1,
@@ -91,26 +102,27 @@ class ActivityDashboard : AppCompatActivity() {
             ).commit()
         }
 
+        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                filterList(newText)
+                return true
+            }
+        })
     }
 
-    private fun eventChangeListener() {
-        fstore = FirebaseFirestore.getInstance()
-        fstore.collection("notes")
-            .addSnapshotListener(object : EventListener<QuerySnapshot> {
-                override fun onEvent(value: QuerySnapshot?, error: FirebaseFirestoreException?) {
-                    if (error != null) {
-                        Log.e("Firestore Error", error.message.toString())
-                        return
-                    }
-                    for (dc: DocumentChange in value?.documentChanges!!) {
-                        if (dc.type == DocumentChange.Type.ADDED) {
-                            noteList.add(dc.document.toObject(Note::class.java))
-                        }
-                    }
-                    myAdapter.notifyDataSetChanged()
-                }
-
-            })
+    private fun filterList(newText: String) {
+        val filteredList: MutableList<Note> = mutableListOf()
+        for(singleNote in noteList){
+            if(singleNote.title.toLowerCase().contains(newText.toLowerCase(Locale.ROOT))
+                || singleNote.content.toLowerCase().contains(newText.toLowerCase(Locale.ROOT))){
+                filteredList.add(singleNote)
+            }
+        }
+        myAdapter.filterList(filteredList)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -163,6 +175,35 @@ class ActivityDashboard : AppCompatActivity() {
         return colorCode.get(number)
     }
 
-}
+    //Function to fetch data from firestore
+    fun getUserData(noteList: MutableList<Note>){
+        userID = FirebaseAuth.getInstance().currentUser?.uid.toString()
+        fstore = FirebaseFirestore.getInstance()
+        lateinit var userNotes: ArrayList<Note>
+        fstore.collection("users").document(userID).collection("notes").get()
+            .addOnCompleteListener {
 
+                noteList.clear()
+
+            if(it.isSuccessful()){
+                for(document in it.result){
+                    val note: Note = Note()
+
+                    note.content = document.data.get("Content").toString()
+                    note.title = document.data.get("Title").toString()
+                    note.userID = document.data.get("userID").toString()
+                    note.noteID = document.data.get("noteID").toString()
+
+                    noteList.add(note)
+                }
+                myAdapter.notifyDataSetChanged()
+
+            }else{
+                Log.w(TAG, "Error fetching documents")
+            }
+        }
+
+    }
+
+}
 

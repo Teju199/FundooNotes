@@ -13,9 +13,11 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fundoonotes.FragmentNotes
 import com.example.fundoonotes.R
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import java.util.*
 
-class Adapter(private val noteList: MutableList<Note>) : RecyclerView.Adapter<Adapter.MyViewHolder>(){
+class Adapter(private var noteList: MutableList<Note>) : RecyclerView.Adapter<Adapter.MyViewHolder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val view: View = LayoutInflater.from(parent.getContext())
             .inflate(R.layout.notes_view_layout,parent,false)
@@ -25,22 +27,25 @@ class Adapter(private val noteList: MutableList<Note>) : RecyclerView.Adapter<Ad
 
     override fun onBindViewHolder(holder: Adapter.MyViewHolder, position: Int) {
         val note: Note = noteList[position]
-        holder.noteTitle.text = note.title
-        holder.noteContent.text = note.content
+        holder.noteTitle.setText(note.title)
+        holder.noteContent.setText(note.content)
+        holder.noteID.setText(note.noteID)
         holder.mCardView.setCardBackgroundColor(getRandomColor())
 
         holder.view.setOnClickListener {
 
             val activity: AppCompatActivity = it.getContext() as AppCompatActivity
-            note.title?.let { it1 -> note.content?.let { it2 ->
-                FragmentNotes(it1,
-                    it2)
-            } }?.let { it2 ->
-                activity.getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragmentcontainer1,
-                        it2
-                    ).addToBackStack(null).commit()
-            }
+
+                note.title.let { it1 -> note.content?.let{ it2 -> note.noteID?.let { it3 ->
+                    FragmentNotes(it1,
+                        it2, it3)
+                } } }
+                    ?.let { it3 ->
+                    activity.getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragmentcontainer1,
+                            it3
+                        ).addToBackStack(null).commit()
+                }
         }
     }
 
@@ -48,12 +53,17 @@ class Adapter(private val noteList: MutableList<Note>) : RecyclerView.Adapter<Ad
         return noteList.size
     }
 
+    fun filterList(filteredList: List<Note>){
+        noteList = filteredList as MutableList<Note>
+        notifyDataSetChanged()
+    }
+
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         var noteTitle: TextView = itemView.findViewById(R.id.title)
         var noteContent: TextView = itemView.findViewById(R.id.content)
+        var noteID: TextView = itemView.findViewById(R.id.noteID)
         var view = itemView
         var mCardView: CardView = itemView.findViewById(R.id.cardView)
-
     }
 
     private fun getRandomColor(): Int{

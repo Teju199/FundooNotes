@@ -124,7 +124,8 @@ class FragmentRegister : Fragment() {
                 Toast.LENGTH_SHORT
             ).show()
         } else {
-            RegisterViewModel.registerUser(email, password)
+
+            RegisterViewModel.registerUser(email, password, name)
             RegisterViewModel.registerStatus.observe(viewLifecycleOwner, Observer {
 
                 if (it.status) {
@@ -140,7 +141,6 @@ class FragmentRegister : Fragment() {
                             ).show()
                             firebaseAuth?.signOut()
 
-                            userAuthService.saveFireStore(name, email)
                         }
                     }
 
@@ -150,5 +150,4 @@ class FragmentRegister : Fragment() {
             })
         }
     }
-
 }

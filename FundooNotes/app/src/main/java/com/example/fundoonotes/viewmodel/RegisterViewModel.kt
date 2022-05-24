@@ -11,8 +11,8 @@ class RegisterViewModel(val userAuthService: UserAuthService): ViewModel() {
     private val _registerStatus = MutableLiveData<AuthListener>()
     val registerStatus = _registerStatus as LiveData<AuthListener>
 
-    fun registerUser(email: String, password: String){
-        userAuthService.registerUser(email, password){
+    fun registerUser(email: String, password: String, fullName:String){
+        userAuthService.registerUser(email, password, fullName){
             if(it.status){
                 _registerStatus.value = it
             }

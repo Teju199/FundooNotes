@@ -42,10 +42,10 @@
         android:drawablePadding="10dp"
         android:fontFamily="@font/aclonica"
         android:paddingLeft="20dp"
+        android:paddingTop="5dp"
         android:text="Full Name"
         android:textColor="@color/white"
         android:textSize="13dp"
-        android:paddingTop="5dp"
         android:textStyle="normal" />
 
 

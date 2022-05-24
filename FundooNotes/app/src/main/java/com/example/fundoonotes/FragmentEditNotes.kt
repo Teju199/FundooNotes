@@ -13,11 +13,14 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.fundoonotes.model.Note
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.okhttp.internal.DiskLruCache
+import java.util.*
+import kotlin.collections.HashMap
 
-class FragmentEditNotes(val title: String, val content: String) : Fragment() {
+class FragmentEditNotes(val title: String, val content: String, var noteID: String) : Fragment() {
 
     lateinit var fstore: FirebaseFirestore
 
@@ -50,28 +53,33 @@ class FragmentEditNotes(val title: String, val content: String) : Fragment() {
                 ).show()
             }
 
-            val documentReference: DocumentReference =
-                fstore.collection("notes").document()
+            val userID = FirebaseAuth.getInstance().currentUser?.uid.toString()
+
+            val documentReference: DocumentReference = fstore.collection("users")
+                .document(userID).collection("notes").document(noteID)
             val note: HashMap<String, Any> = HashMap()
-            note.put("title", editNoteTitle)
-            note.put("content", editNoteContent)
+
+            note.put("Title", editNoteTitle)
+            note.put("Content", editNoteContent)
+            note.put("userID", userID)
+
 
             documentReference.update(note).addOnSuccessListener {
                 Toast.makeText(
-                    getContext(), "Note saved",
+                    getContext(), "Note added",
                     Toast.LENGTH_LONG
                 ).show()
 
                 val intent: Intent = Intent(getActivity(), ActivityDashboard::class.java)
                 startActivity(intent)
-            }
-                .addOnFailureListener {
-                    Toast.makeText(
-                        getContext(), "Failed to add note",
-                        Toast.LENGTH_LONG
-                    ).show()
                 }
-        }
+                    .addOnFailureListener {
+                        Toast.makeText(
+                            getContext(), "Failed to add note",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+            }
         return view
     }
 }

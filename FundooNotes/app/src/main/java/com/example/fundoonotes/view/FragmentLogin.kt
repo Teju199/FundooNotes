@@ -145,19 +145,6 @@ class FragmentLogin : Fragment() {
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
 
         try {
-            //val account: GoogleSignInAccount = completedTask.getResult(ApiException::class.java)
-
-            val acct: GoogleSignInAccount? = GoogleSignIn.getLastSignedInAccount(requireContext())
-
-            if (acct != null) {
-                val personName: String? = acct.getDisplayName()
-                val personGivenName: String? = acct.getGivenName()
-                val personFamilyName: String? = acct.getFamilyName()
-                val personEmail: String? = acct.getEmail()
-                val personId: String? = acct.getId()
-                val personPhoto: Uri? = acct.getPhotoUrl()
-            }
-
             val intent: Intent = Intent(getActivity(), ActivityDashboard::class.java)
             startActivity(intent)
 

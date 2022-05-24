@@ -37,8 +37,8 @@ class EmailValidationTest {
         assertEquals(false, fragmentRegister.isValidPassword(password))
     }
 
-    /*@Test
-    fun incorrectEmailReturnsFalseWhenUsernameOrPasswordIsEmpty(){
+    @Test
+    fun incorrectEmailReturnsFalseWhenEmailIsInvalid(){
         val name =  ""
         val email = "capt.ing@gmail"
         val password = ""
@@ -49,20 +49,21 @@ class EmailValidationTest {
 
 
     @Test
-    fun loginFunctionReturnsFalseWhenEmailOrPasswordIsEmpty(){
+    fun IfPasswordDoNotContainASpecialCharacterOrCapslockReturnsFalse(){
+        val name =  ""
         val email = ""
-        val password = ""
-        val listener = ""
-        val loginViewModel: LoginViewModel = LoginViewModel(userAuthService)
-        assertEquals(false, loginViewModel.userLogin(email, password))
+        val password = "1234567"
+        val repeatPassword = ""
+        val fragmentRegister: FragmentRegister = FragmentRegister()
+        assertEquals(false, fragmentRegister.isValidPassword(password))
     }
 
     @Test
-    fun RegisterFunctionReturnsFalseWhenEmailOrPasswordIsEmpty(){
+    fun IfPasswordIsLessThanSixDigitsPasswordReturnsFalse(){
         val email = ""
         val password = ""
         val listener = ""
-        val registerViewModel: RegisterViewModel = RegisterViewModel(userAuthService)
-        assertEquals(false, registerViewModel.registerUser(email, password))
-    }*/
+        val fragmentRegister: FragmentRegister = FragmentRegister()
+        assertEquals(false, fragmentRegister.isValidPassword(password))
+    }
 }

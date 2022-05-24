@@ -1,23 +1,21 @@
 package com.example.fundoonotes
 
-import android.content.Intent.getIntent
 import android.os.Bundle
-import android.text.TextUtils.replace
 import android.text.method.ScrollingMovementMethod
 import android.view.*
+import android.view.ContextMenu.ContextMenuInfo
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.example.fundoonotes.view.FragmentLogin
-import com.example.fundoonotes.view.FragmentRegister
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import org.intellij.lang.annotations.JdkConstants
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import android.content.Intent as Intent1
 
-class FragmentNotes(var title: String, var content: String) : Fragment() {
+
+class FragmentNotes(var title: String, var content: String, var noteID : String) : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,10 +35,11 @@ class FragmentNotes(var title: String, var content: String) : Fragment() {
 
         contenttv.setMovementMethod(ScrollingMovementMethod())
 
-        (activity as AppCompatActivity?)!!.setSupportActionBar(toolbar)
+        (activity as AppCompatActivity?)?.setSupportActionBar(toolbar)
 
         contenttv.text = content
         titletv.text = title
+
 
         backButton.setOnClickListener{
             val intent: Intent1 = Intent1(getActivity(), ActivityDashboard::class.java)
@@ -51,7 +50,7 @@ class FragmentNotes(var title: String, var content: String) : Fragment() {
         editNoteBtn.setOnClickListener {
             val transaction = activity?.supportFragmentManager?.beginTransaction()
             if (transaction != null) {
-                transaction.replace(R.id.fragmentcontainer1, FragmentEditNotes(title, content))
+                transaction.replace(R.id.fragmentcontainer1, FragmentEditNotes(title, content, noteID))
                 transaction.disallowAddToBackStack()
                 transaction.commit()
             }
@@ -60,21 +59,19 @@ class FragmentNotes(var title: String, var content: String) : Fragment() {
         return view
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        setHasOptionsMenu(true)
+    /*override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
     }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater!!.inflate(R.menu.noteoptionsmenu, menu)
-        super.onCreateOptionsMenu(menu, inflater)
+*/
+    override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {
+        menuInflater.inflate(R.menu.noteoptionsmenu, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
 
             R.id.action_delete -> {
-
+                deleteNote(noteID)
             }
 
             R.id.action_close -> {
@@ -83,10 +80,16 @@ class FragmentNotes(var title: String, var content: String) : Fragment() {
                     android.content.Intent(getActivity(), ActivityDashboard::class.java)
                 startActivity(intent)
             }
-
         }
+        return true
+    }
 
-        return super.onOptionsItemSelected(item)
+    private fun deleteNote(noteID: String) {
+        val fstore = FirebaseFirestore.getInstance()
+        val userID = FirebaseAuth.getInstance().currentUser?.uid.toString()
+
+        fstore.collection("users").document(userID).collection("notes")
+            .document(noteID).delete()
     }
 
 }

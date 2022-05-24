@@ -26,20 +26,22 @@
             android:layout_alignParentEnd="true"
             android:layout_marginTop="35dp"
             android:layout_marginEnd="35dp"
-            android:background="@drawable/ic_baseline_whiteaccount_circle_24">
+            android:background="@drawable/ic_baseline_whiteaccount_circle_24"/>
 
-        </ImageView>
 
-        <ImageView
+        <androidx.appcompat.widget.SearchView
             android:id="@+id/searchIcon"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="35dp"
+            android:layout_marginStart="70dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="130dp"
-            android:background="@drawable/ic_baseline_whitesearch_24">
-
-        </ImageView>
+            android:background="@drawable/searchboxdesign"
+            android:paddingStart="20dp"
+            android:theme="@style/ThemeOverlay.SearchView"
+            app:actionViewClass="android.widget.SearchView"
+            app:queryHint="search"
+            app:searchHintIcon="@drawable/ic_baseline_whitesearch_24" />
 
         <ImageView
             android:id="@+id/viewChangerIcon"
