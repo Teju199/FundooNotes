@@ -1,5 +1,6 @@
 package com.example.fundoonotes
 
+import android.app.Activity
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
 import android.view.*
@@ -29,6 +30,8 @@ class FragmentNotes(var title: String, var content: String, var noteID : String)
 
         val backButton: ImageView = view.findViewById(R.id.backButton1)
         val editNoteBtn: FloatingActionButton = view.findViewById(R.id.editNoteFloatingBtn)
+        val deleteButton: ImageView = view.findViewById(R.id.deleteButton)
+        val closeNoteButton: FloatingActionButton = view.findViewById(R.id.closeNoteFloatingBtn)
 
         val contenttv: TextView = view.findViewById(R.id.noteContent)
         val titletv: TextView = view.findViewById(R.id.noteTitle)
@@ -56,33 +59,67 @@ class FragmentNotes(var title: String, var content: String, var noteID : String)
             }
         }
 
+        deleteButton.setOnClickListener {
+            deleteNote(noteID)
+            Toast.makeText(getContext(), "Note deleted", Toast.LENGTH_SHORT).show()
+
+            val intent: android.content.Intent =
+                android.content.Intent(getActivity(), ActivityDashboard::class.java)
+            startActivity(intent)
+
+        }
+
+        closeNoteButton.setOnClickListener {
+            Toast.makeText(getContext(), "No changes made", Toast.LENGTH_SHORT).show()
+
+            val intent: android.content.Intent =
+                android.content.Intent(getActivity(), ActivityDashboard::class.java)
+            startActivity(intent)
+        }
+
         return view
     }
 
     /*override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
-    }
-*/
-    override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {
-        menuInflater.inflate(R.menu.noteoptionsmenu, menu)
+        setHasOptionsMenu(true)
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater){
+        menuInflater.inflate(R.menu.noteoptionsmenu, menu)
+        Toast.makeText(getContext(), "clicked on menu", Toast.LENGTH_SHORT).show()
+
+        val close = menu.findItem(R.id.action_close)
+
+        close.setOnMenuItemClickListener {
+            Toast.makeText(getContext(), "clicked on close", Toast.LENGTH_SHORT).show()
+            val intent: Intent1 =
+                Intent1(getActivity(), ActivityDashboard::class.java)
+            this.startActivity(intent)
+            true
+        }
+        super.onCreateOptionsMenu(menu,menuInflater)
+    }
+
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        Toast.makeText(getContext(), "menu selected", Toast.LENGTH_SHORT).show()
+
         when(item.itemId){
 
             R.id.action_delete -> {
-                deleteNote(noteID)
+                Toast.makeText(getContext(), "clicked on delete", Toast.LENGTH_SHORT).show()
             }
 
-            R.id.action_close -> {
-                Toast.makeText(getContext(), "No changes made", Toast.LENGTH_SHORT).show()
+            *//*R.id.action_close -> {
                 val intent: android.content.Intent =
                     android.content.Intent(getActivity(), ActivityDashboard::class.java)
                 startActivity(intent)
-            }
+            }*//*
+
         }
-        return true
-    }
+        return super.onOptionsItemSelected(item)
+    }*/
 
     private fun deleteNote(noteID: String) {
         val fstore = FirebaseFirestore.getInstance()

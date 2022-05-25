@@ -1,5 +1,6 @@
 package com.example.fundoonotes.view
 
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -27,21 +28,23 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 
 class FragmentLogin : Fragment() {
 
-    var firebaseAuth: FirebaseAuth? = null
-    var gso: GoogleSignInOptions? = null
-    var gsc: GoogleSignInClient? = null
+    lateinit var firebaseAuth: FirebaseAuth
+    lateinit var gso: GoogleSignInOptions
+    lateinit var gsc: GoogleSignInClient
     val RC_SIGN_IN: Int = 100
     private lateinit var loginViewModel: LoginViewModel
     lateinit var sharedViewModel: SharedViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?): View? {
+        savedInstanceState: Bundle?
+    ): View? {
 
         val view: View = inflater.inflate(R.layout.fragment_login, container, false)
 
@@ -105,13 +108,12 @@ class FragmentLogin : Fragment() {
                 loginViewModel.userLogin(email, password)
                 loginViewModel.loginStatus.observe(viewLifecycleOwner, Observer {
 
-                    if(it.status){
+                    if (it.status) {
                         checkEmailVerification()
                         Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
                         sharedViewModel.setGotoHomePageStatus(true)
 
-                    }
-                    else{
+                    } else {
                         Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
                         sharedViewModel.setGotoLoginPageStatus(true)
                     }
@@ -139,6 +141,7 @@ class FragmentLogin : Fragment() {
         if (requestCode == RC_SIGN_IN) {
             val task: Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data)
             handleSignInResult(task)
+
         }
     }
 
@@ -153,6 +156,7 @@ class FragmentLogin : Fragment() {
 
         }
     }
+
 
     private fun checkEmailVerification() {
 

@@ -50,8 +50,6 @@ class ActivityDashboard() : AppCompatActivity() {
         val mAddNoteButton: FloatingActionButton = findViewById(R.id.addNoteFloatingBtn)
         val notesList: RecyclerView = findViewById(R.id.notesList)
         val fstore: FirebaseFirestore = FirebaseFirestore.getInstance()
-        //val menuItem: MenuItem = menu!!.findItem(R.id.searchIcon)
-        //val searchView: SearchView = MenuItemCompat.getActionView(menuItem) as SearchView
         val searchView: SearchView = findViewById(R.id.searchIcon)
 
         recyclerView = findViewById(R.id.notesList)

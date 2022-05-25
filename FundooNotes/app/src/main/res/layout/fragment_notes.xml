@@ -17,11 +17,22 @@
         android:layout_marginEnd="20dp"
         android:background="@drawable/toolbardesign"
         android:paddingStart="50dp"
-        app:menu="@menu/noteoptionsmenu"
         app:title="Notes"
         app:titleTextColor="@color/white">
 
     </androidx.appcompat.widget.Toolbar>
+
+    <ImageView
+        android:id="@+id/deleteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="34dp"
+        android:layout_marginRight="30dp"
+        android:src="@drawable/ic_baseline_delete_24">
+
+    </ImageView>
+
 
 
     <ImageView
@@ -73,15 +84,30 @@
         android:id="@+id/editNoteFloatingBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        app:backgroundTint="@color/colorPrimaryDark"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
         android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
         android:src="@drawable/ic_baseline_edit_24"
+        app:backgroundTint="#162035"
         app:maxImageSize="30dp">
 
     </com.google.android.material.floatingactionbutton.FloatingActionButton>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/closeNoteFloatingBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:src="@drawable/ic_baseline_close_24"
+        app:backgroundTint="#162035"
+        app:maxImageSize="30dp" />
+
+
 
 
 
