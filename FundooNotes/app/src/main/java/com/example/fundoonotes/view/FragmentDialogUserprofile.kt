@@ -12,9 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.lifecycle.ViewModelProvider
-import com.example.fundoonotes.ActivityDashboard
 import com.example.fundoonotes.R
-import com.example.fundoonotes.model.User
 import com.example.fundoonotes.model.UserAuthService
 import com.example.fundoonotes.viewmodel.SharedViewModel
 import com.example.fundoonotes.viewmodel.SharedViewModelFactory
@@ -28,7 +26,7 @@ import com.google.firebase.storage.UploadTask
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 
-class Fragment_dialog_userprofile : Fragment() {
+class FragmentDialogUserprofile : Fragment() {
     lateinit var firebaseAuth: FirebaseAuth
     private val PICK_IMAGE: Int = 1
     lateinit var uploadTask: UploadTask
@@ -55,7 +53,7 @@ class Fragment_dialog_userprofile : Fragment() {
         val PICK_IMAGE: Int = 1
         profileImage = view?.findViewById(R.id.profile_image)!!
         val backButton: ImageView = view.findViewById(R.id.backButton)
-        val sharedViewModel: SharedViewModel
+        lateinit var sharedViewModel: SharedViewModel
 
 
         firebaseAuth = FirebaseAuth.getInstance()
@@ -66,6 +64,11 @@ class Fragment_dialog_userprofile : Fragment() {
         val dialog: ProgressDialog = ProgressDialog(context)
         val userID: String? = firebaseAuth.currentUser?.uid.toString()
         val user: FirebaseUser? = firebaseAuth.getCurrentUser()
+
+        sharedViewModel = ViewModelProvider(
+            this,
+            SharedViewModelFactory(UserAuthService())
+        )[SharedViewModel::class.java]
 
 
         dialog.setTitle("Profile")

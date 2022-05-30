@@ -1,0 +1,88 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#191718"
+    tools:actionBarNavMode="standard">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar1"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/toolbardesign"
+        android:paddingStart="50dp"
+        app:title="Edit label"
+        app:titleTextColor="@color/white">
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/labelList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/check"
+
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+
+
+    <ImageView
+        android:id="@+id/backButton1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar1"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="-40dp"
+        android:paddingStart="10dp"
+        android:src="@drawable/ic_baseline_arrow_back_24">
+
+    </ImageView>
+
+    <EditText
+        android:id="@+id/createNewLabel"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_below="@id/toolbar1"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="20dp"
+        android:background="@color/white"
+        android:backgroundTint="#100E0E"
+        android:drawableLeft="@drawable/ic_baseline_add_24"
+        android:drawablePadding="10dp"
+        android:paddingStart="10dp"
+        android:hint="Create new label"
+        android:textColorHint="@color/white"
+        android:textSize="18sp">
+
+    </EditText>
+
+    <Button
+        android:id="@+id/check"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ADD"
+        android:background="#2A4D97"
+        android:layout_below="@id/createNewLabel"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="310dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/ic_baseline_check_24">
+
+    </Button>
+
+</RelativeLayout>
+
+
+
+
+

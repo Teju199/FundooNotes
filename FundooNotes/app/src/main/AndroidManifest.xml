@@ -13,7 +13,7 @@
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.FundooNotes">
         <activity
-            android:name=".ActivityDashboard"
+            android:name=".view.ActivityDashboard"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".FragmentNotes"
-    android:background="#9F848C"
+    tools:context=".view.FragmentNotes"
+    android:background="@color/black"
     tools:actionBarNavMode="standard">
 
     <androidx.appcompat.widget.Toolbar
@@ -57,7 +57,8 @@
         android:layout_marginEnd="20dp"
         android:hint="Title"
         android:paddingLeft="10dp"
-        android:textColor="#202133"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
         android:textSize="20sp"
         android:textStyle="bold">
 
@@ -74,6 +75,8 @@
         android:layout_marginTop="15dp"
         android:layout_marginEnd="20dp"
         android:hint="Note"
+        android:textColorHint="@color/white"
+        android:textColor="@color/white"
         android:paddingLeft="10dp"
         android:scrollbars="vertical"
         android:textSize="18sp">
@@ -89,7 +92,7 @@
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
         android:src="@drawable/ic_baseline_edit_24"
-        app:backgroundTint="#162035"
+        app:backgroundTint="#304B83"
         app:maxImageSize="30dp">
 
     </com.google.android.material.floatingactionbutton.FloatingActionButton>
@@ -104,7 +107,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
         android:src="@drawable/ic_baseline_close_24"
-        app:backgroundTint="#162035"
+        app:backgroundTint="#304B83"
         app:maxImageSize="30dp" />
 
 
