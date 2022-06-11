@@ -17,20 +17,18 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-
-        >
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Title"
+            android:layout_marginBottom="5dp"
+            android:fontFamily="@font/aclonica"
             android:gravity="center_horizontal"
-            android:textStyle="bold"
-            android:textColor="#C524E1"
-            android:textSize="18sp"
-            android:layout_marginBottom="5dp">
+            android:text="Title"
+            android:textColor="#23367E"
+            android:textSize="17sp">
 
         </TextView>
 
@@ -57,6 +55,7 @@
             android:layout_marginTop="10dp"
             android:textColor="#F3EFF4">
         </TextView>
+
 
 
     </LinearLayout>

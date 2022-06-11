@@ -11,24 +11,26 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.fundoonotes.R
+import com.example.fundoonotes.model.Note
 import com.example.fundoonotes.model.NoteService
-import com.example.fundoonotes.model.UserAuthService
+import com.example.fundoonotes.model.Utility
 import com.example.fundoonotes.viewmodel.NoteViewModel
 import com.example.fundoonotes.viewmodel.NoteViewModelFactory
-import com.example.fundoonotes.viewmodel.SharedViewModel
-import com.example.fundoonotes.viewmodel.SharedViewModelFactory
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlin.properties.Delegates
 
 class FragmentEditNotes() : Fragment() {
 
-    lateinit var fstore: FirebaseFirestore
-    //lateinit var sharedViewModel: SharedViewModel
     lateinit var noteViewModel: NoteViewModel
-
     lateinit var title: String
     lateinit var content: String
     lateinit var noteID: String
+    lateinit var dataBaseHelper: DataBaseHelper
+    lateinit var editNoteTitle: EditText
+    lateinit var editNoteContent: EditText
+    lateinit var userID: String
 
     constructor(title:String, content: String, noteID: String): this(){
         this.title = title
@@ -43,20 +45,17 @@ class FragmentEditNotes() : Fragment() {
 
         val view: View = inflater.inflate(R.layout.fragment_edit_notes, container, false)
 
-        val editNoteTitle: EditText = view.findViewById(R.id.editNoteTitle)
-        val editNoteContent: EditText = view.findViewById(R.id.editNoteContent)
+        editNoteTitle = view.findViewById(R.id.editNoteTitle)
+        editNoteContent = view.findViewById(R.id.editNoteContent)
         val saveEdtNoteFloatingBtn: FloatingActionButton = view.findViewById(R.id.saveEdtNoteFloatingBtn)
         val backButton: ImageView = view.findViewById(R.id.backButton1)
+        dataBaseHelper = DataBaseHelper(context)
+        userID = FirebaseAuth.getInstance().currentUser?.uid.toString()
 
         val fstore = FirebaseFirestore.getInstance()
 
         noteViewModel = ViewModelProvider(this, NoteViewModelFactory(NoteService()))
             .get(NoteViewModel::class.java)
-
-        /*sharedViewModel = ViewModelProvider(
-            this,
-            SharedViewModelFactory(UserAuthService())
-        )[SharedViewModel::class.java]*/
 
         editNoteTitle.setText(title)
         editNoteContent.setText(content)
@@ -68,9 +67,41 @@ class FragmentEditNotes() : Fragment() {
 
         saveEdtNoteFloatingBtn.setOnClickListener {
 
-            val editNoteTitle = editNoteTitle.getText().toString()
-            val editNoteContent = editNoteContent.getText().toString()
+            var utility: Utility = Utility()
+            val editNoteTitle1 = editNoteTitle.getText().toString()
+            val editNoteContent1 = editNoteContent.getText().toString()
 
+            if (utility.isNetworkAvailable(context).equals(true)) {
+                editNoteFromSqlite(editNoteTitle1, editNoteContent1,noteID)
+                editNoteFromFirestore(editNoteTitle1, editNoteContent1, userID, noteID)
+            }
+            else{
+                editNoteFromSqlite(editNoteTitle1, editNoteContent1, noteID)
+            }
+        }
+        return view
+    }
+
+    fun editNoteFromSqlite(updatedTitle: String, updatedContent: String, noteID: String) {
+        if (!updatedTitle.isEmpty() && !updatedContent.isEmpty()) {
+
+            var note: Note = Note(updatedTitle, updatedContent, " ", noteID)
+
+            dataBaseHelper.updateNote(updatedTitle, updatedContent, " ", noteID)
+/*
+            Toast.makeText(context, "Notes updated", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(context, "Empty notes cannot be saved", Toast.LENGTH_SHORT).show()
+        }*/
+        }
+    }
+
+        fun editNoteFromFirestore(
+            editNoteTitle: String,
+            editNoteContent: String,
+            userID: String,
+            noteID: String
+        ) {
             if (editNoteTitle.isEmpty() || editNoteContent.isEmpty()) {
                 Toast.makeText(
                     getContext(), "Notes with empty fields cannot be saved",
@@ -78,9 +109,9 @@ class FragmentEditNotes() : Fragment() {
                 ).show()
             }
 
-            noteViewModel.editNote(editNoteTitle, editNoteContent, noteID)
+            noteViewModel.editNote(editNoteTitle, editNoteContent, userID, noteID)
 
-            noteViewModel.noteStatus.observe(viewLifecycleOwner, androidx.lifecycle.Observer{
+            noteViewModel.noteStatus.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
 
                 if (it.status) {
                     Toast.makeText(this.context, it.message, Toast.LENGTH_LONG).show()
@@ -91,8 +122,6 @@ class FragmentEditNotes() : Fragment() {
                     Toast.makeText(this.context, it.message, Toast.LENGTH_LONG).show()
                 }
             })
+        }
 
-            }
-        return view
-    }
 }

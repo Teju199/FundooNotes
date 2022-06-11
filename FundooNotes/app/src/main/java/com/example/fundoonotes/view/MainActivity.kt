@@ -1,4 +1,4 @@
-package com.example.fundoonotes
+package com.example.fundoonotes.view
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,10 +7,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
+import com.example.fundoonotes.R
 import com.example.fundoonotes.model.UserAuthService
-import com.example.fundoonotes.view.ActivityDashboard
-import com.example.fundoonotes.view.FragmentLogin
-import com.example.fundoonotes.view.FragmentRegister
 import com.example.fundoonotes.viewmodel.SharedViewModel
 import com.example.fundoonotes.viewmodel.SharedViewModelFactory
 

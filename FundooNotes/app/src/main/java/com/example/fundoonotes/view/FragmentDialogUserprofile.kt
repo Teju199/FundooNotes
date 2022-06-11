@@ -29,10 +29,8 @@ import de.hdodenhof.circleimageview.CircleImageView
 class FragmentDialogUserprofile : Fragment() {
     lateinit var firebaseAuth: FirebaseAuth
     private val PICK_IMAGE: Int = 1
-    lateinit var uploadTask: UploadTask
     lateinit var storageReference: StorageReference
     lateinit var fstore: FirebaseFirestore
-    lateinit var documentReference: DocumentReference
     lateinit var profileImage: CircleImageView
     lateinit var imageUri: Uri
     lateinit var userAuthService: UserAuthService
@@ -63,7 +61,6 @@ class FragmentDialogUserprofile : Fragment() {
         userAuthService = UserAuthService()
         val dialog: ProgressDialog = ProgressDialog(context)
         val userID: String? = firebaseAuth.currentUser?.uid.toString()
-        val user: FirebaseUser? = firebaseAuth.getCurrentUser()
 
         sharedViewModel = ViewModelProvider(
             this,

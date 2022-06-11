@@ -19,30 +19,11 @@
         android:layout_height="match_parent"
         android:id="@+id/fragmentcontainer1"/>
 
-    <!--<RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">-->
-
-
-       <!-- <androidx.appcompat.widget.SearchView
-            android:id="@+id/searchIcon"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="70dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="130dp"
-            android:background="@drawable/searchboxdesign"
-            android:paddingStart="20dp"
-            android:theme="@style/ThemeOverlay.SearchView"
-            app:actionViewClass="android.widget.SearchView"
-            app:queryHint="search"
-            app:searchHintIcon="@drawable/ic_baseline_whitesearch_24" />-->
-
-
 
     <com.google.android.material.navigation.NavigationView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:background="@color/white"
         android:id="@+id/navigationMenu"
         app:menu="@menu/iconmenu"
         app:headerLayout="@layout/navheaderfile"

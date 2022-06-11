@@ -1,18 +1,14 @@
-package com.example.fundoonotes
+package com.example.fundoonotes.view
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
+import android.widget.*
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.fundoonotes.model.LabelAdapter
-import com.example.fundoonotes.view.ActivityDashboard
+import com.example.fundoonotes.R
+import com.example.fundoonotes.model.Label
 
 
 class FragmentCreateLabel: Fragment() {
@@ -26,9 +22,13 @@ class FragmentCreateLabel: Fragment() {
         val backButton: ImageView = view.findViewById(R.id.backButton1)
         val createLabel: EditText = view.findViewById(R.id.createNewLabel)
         val checkBox: Button = view.findViewById(R.id.check)
-        val recyclerView1: RecyclerView = view.findViewById(R.id.labelList)
+        val list: ListView = view.findViewById(R.id.labelList)
         val label: String = createLabel.getText().toString()
 
+        var labels: MutableList<Label> = mutableListOf()
+        for(label in labels){
+            labels.add(label)
+        }
 
         backButton.setOnClickListener {
             val intent: Intent = Intent(getActivity(), ActivityDashboard::class.java)
@@ -36,14 +36,11 @@ class FragmentCreateLabel: Fragment() {
         }
 
         checkBox.setOnClickListener {
-            val manager = LinearLayoutManager(this.context)
-            recyclerView1.setLayoutManager(manager)
-            recyclerView1.setHasFixedSize(true)
-            val myLabelAdapter = LabelAdapter(label)
-            recyclerView1.setAdapter(myLabelAdapter)
-            myLabelAdapter.notifyDataSetChanged()
-        }
+            Toast.makeText(context, "clicked add", Toast.LENGTH_LONG).show()
+            val labelArrayAdapter: ArrayAdapter<Label> = ArrayAdapter<Label>(requireContext(), android.R.layout.simple_list_item_1, labels)
+            list.setAdapter(labelArrayAdapter)
 
+        }
         return view
     }
 }

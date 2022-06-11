@@ -1,6 +1,11 @@
 package com.example.fundoonotes.model
 
 import android.net.Uri
+import android.service.controls.actions.ControlAction
+import com.example.fundoonotes.api.Constant
+import com.example.fundoonotes.api.LoginListener
+import com.example.fundoonotes.api.LoginLoader
+import com.example.fundoonotes.api.LoginResponse
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -13,16 +18,14 @@ import de.hdodenhof.circleimageview.CircleImageView
 import kotlin.collections.HashMap
 
 class UserAuthService {
-    lateinit var firebaseAuth: FirebaseAuth
-    lateinit var fstore: FirebaseFirestore
+    var firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
+    var fstore: FirebaseFirestore = FirebaseFirestore.getInstance()
     lateinit var firebaseUser: FirebaseUser
     lateinit var storageReference: StorageReference
     lateinit var firebaseStorage: FirebaseStorage
     lateinit var userID: String
 
     init {
-        firebaseAuth = FirebaseAuth.getInstance()
-        fstore = FirebaseFirestore.getInstance()
         userID = FirebaseAuth.getInstance().currentUser?.uid.toString()
     }
 
@@ -38,6 +41,24 @@ class UserAuthService {
                     listener(AuthListener(false, "User failed to login"))
                 }
             }
+    }
+
+    fun loginWithRestApi(email: String, password: String,listener: (AuthListener) -> Unit){
+        val loginLoader = LoginLoader()
+        loginLoader.getLoginDone(object: LoginListener{
+            override fun getLoginDone(response: LoginResponse?, status: Boolean, message: String) {
+                if(status){
+                    if(response != null){
+                        Constant.getInstance()?.setUserID(response.localId)
+                        listener(AuthListener(true, "Successfully logged in with rest api."))
+                    }
+                    else{
+                        listener(AuthListener(true, "Login failed"))
+                    }
+                }
+            }
+
+        }, email, password)
     }
 
     fun registerUser(

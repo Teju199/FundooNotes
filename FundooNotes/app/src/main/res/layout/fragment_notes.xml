@@ -33,6 +33,16 @@
 
     </ImageView>
 
+    <ImageView
+        android:id="@+id/archive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="80dp"
+        android:src="@drawable/ic_whitearchive_24"
+        android:layout_marginTop="34dp">
+
+    </ImageView>
 
 
     <ImageView
@@ -44,6 +54,17 @@
         android:layout_marginTop="-40dp"
         android:paddingStart="10dp"
         android:src="@drawable/ic_baseline_arrow_back_24">
+
+    </ImageView>
+
+    <ImageView
+        android:id="@+id/reminder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_notifications_24"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="130dp"
+        android:layout_marginTop="34dp">
 
     </ImageView>
 
@@ -82,6 +103,20 @@
         android:textSize="18sp">
 
     </TextView>
+
+    <!--<TextView
+        android:id="@+id/dateTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="150dp"
+        android:paddingLeft="10dp"
+        android:text="Date and time"
+        android:textColor="@color/white"
+        android:textSize="15sp">
+
+    </TextView>-->
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/editNoteFloatingBtn"

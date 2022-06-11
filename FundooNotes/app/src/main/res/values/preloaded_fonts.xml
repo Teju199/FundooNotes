@@ -3,10 +3,13 @@
     <array name="preloaded_fonts" translatable="false">
         <item>@font/aclonica</item>
         <item>@font/alex_brush</item>
+        <item>@font/allerta</item>
         <item>@font/architects_daughter</item>
         <item>@font/arizonia</item>
         <item>@font/bonbon</item>
         <item>@font/bungee_shade</item>
+        <item>@font/charmonman_bold</item>
         <item>@font/courgette</item>
+        <item>@font/faster_one</item>
     </array>
 </resources>

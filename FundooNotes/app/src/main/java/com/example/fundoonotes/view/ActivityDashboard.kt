@@ -1,30 +1,33 @@
 package com.example.fundoonotes.view
 
-import android.content.ContentValues.TAG
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import androidx.lifecycle.ViewModelProvider
+import android.view.View
+import android.widget.AbsListView
+import android.widget.ProgressBar
 import android.widget.Toast
-import androidx.appcompat.widget.SearchView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.example.fundoonotes.FragmentCreateLabel
 import com.example.fundoonotes.R
 import com.example.fundoonotes.model.*
+import com.example.fundoonotes.model.Dao.FirebaseDataLayer
 import com.example.fundoonotes.viewmodel.NoteViewModel
 import com.example.fundoonotes.viewmodel.NoteViewModelFactory
+import com.example.fundoonotes.viewmodel.SharedViewModel
+import com.example.fundoonotes.viewmodel.SharedViewModelFactory
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.*
-import java.util.*
+import kotlin.properties.Delegates
 
 
 class ActivityDashboard() : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -41,6 +44,19 @@ class ActivityDashboard() : AppCompatActivity(), NavigationView.OnNavigationItem
     lateinit var noteViewModel: NoteViewModel
     private var noteResults = ArrayList<Note>()
     private var noteList = ArrayList<Note>()
+    private lateinit var sharedViewModel: SharedViewModel
+    lateinit var searchView: SearchView
+    lateinit var fragmentAddNotes: FragmentAddNotes
+    lateinit var allNotes: ArrayList<Note>
+    lateinit var dataBaseHelper: DataBaseHelper
+    lateinit var progressBar: ProgressBar
+    var isScrolling = false
+    var currentItems by Delegates.notNull<Int>()
+    var totalItems by Delegates.notNull<Int>()
+    var scrollOutItems by Delegates.notNull<Int>()
+    lateinit var manager: RecyclerView.LayoutManager
+    lateinit var firebaseDataLayer: FirebaseDataLayer
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,15 +66,26 @@ class ActivityDashboard() : AppCompatActivity(), NavigationView.OnNavigationItem
 
         val mAddNoteButton: FloatingActionButton = findViewById(R.id.addNoteFloatingBtn)
         val nav: NavigationView = findViewById(R.id.navigationMenu)
+        fragmentAddNotes = FragmentAddNotes()
         recyclerView = findViewById(R.id.notesList)
         drawerLayout = findViewById(R.id.drawer)
+        progressBar = findViewById(R.id.progressbar)
+        searchView = findViewById(R.id.searchIcon)
+        firebaseDataLayer = FirebaseDataLayer()
+
+        dataBaseHelper = DataBaseHelper(this)
 
         noteViewModel = ViewModelProvider(this, NoteViewModelFactory(NoteService()))
             .get(NoteViewModel::class.java)
 
+        sharedViewModel = ViewModelProvider(
+            this,
+            SharedViewModelFactory(UserAuthService())
+        )[SharedViewModel::class.java]
+
 
         mAddNoteButton.setOnClickListener {
-            getSupportFragmentManager().beginTransaction().add(
+            supportFragmentManager.beginTransaction().add(
                 R.id.fragmentcontainer1,
                 FragmentAddNotes()
             ).commit()
@@ -88,15 +115,10 @@ class ActivityDashboard() : AppCompatActivity(), NavigationView.OnNavigationItem
 
         nav.setNavigationItemSelectedListener(this)
 
+        view = listView
 
-        //Grid view
-        view = gridView
-        recyclerView.setLayoutManager(
-            StaggeredGridLayoutManager(
-                2,
-                StaggeredGridLayoutManager.VERTICAL
-            )
-        )
+        manager = LinearLayoutManager(this)
+        recyclerView.setLayoutManager(manager)
 
         recyclerView.setHasFixedSize(true)
 
@@ -107,22 +129,63 @@ class ActivityDashboard() : AppCompatActivity(), NavigationView.OnNavigationItem
             myAdapter.notifyDataSetChanged()
         }
 
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL){
+                    isScrolling = true
+                }
+            }
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                currentItems = manager.childCount
+                totalItems = manager.itemCount
+
+
+                scrollOutItems = (manager as LinearLayoutManager).findFirstVisibleItemPosition()
+
+                if(isScrolling && (currentItems + scrollOutItems == totalItems)){
+                    isScrolling = false
+                    fetchData()
+                }
+            }
+        })
+
         //calling function to fetch data
-        getNotes()
+        var utility: Utility = Utility()
 
+        if(utility.isNetworkAvailable(this).equals(true)) {
+            getNotesFromSqlite()
+            getNotesFromFirestore()
+        }else{
+            getNotesFromSqlite()
+        }
 
-        /*searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(p0: String?): Boolean {
                 return false
             }
 
-            override fun onQueryTextChange(newText: String): Boolean {
-                filterList(newText)
+            override fun onQueryTextChange(newText: String?): Boolean {
+                Log.d("onQueryTextChange", "query: " + newText)
+                noteViewModel.setQueryText(newText!!)
+                noteViewModel.queryText.observe(this@ActivityDashboard, androidx.lifecycle.Observer {
+                    myAdapter.filter.filter(newText!!)
+                })
+
                 return true
             }
-        })*/
+        })
+
     }
 
+    private fun fetchData() {
+        progressBar.setVisibility(View.VISIBLE)
+        Handler().postDelayed(Runnable(){
+            getNotesFromFirestore()}, 5000)
+        progressBar.setVisibility(View.GONE )
+    }
 
     override fun onBackPressed() {
 
@@ -141,7 +204,6 @@ class ActivityDashboard() : AppCompatActivity(), NavigationView.OnNavigationItem
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val toggleButton = menuview.getItem(0)
 
         when (item.itemId) {
 
@@ -162,28 +224,11 @@ class ActivityDashboard() : AppCompatActivity(), NavigationView.OnNavigationItem
                         )
                     )
                     recyclerView.setHasFixedSize(true)
-                    //toggleButton.icon = ContextCompat.getDrawable(Activity(), R.drawable.ic_baseline_view_list_24)
                 } else {
                     view = listView
                     recyclerView.layoutManager = LinearLayoutManager(this)
                     recyclerView.setHasFixedSize(true)
-                    //toggleButton.icon = ContextCompat.getDrawable(Activity(), R.drawable.ic_baseline_whitegrid_view_24)
                 }
-            }
-
-            R.id.search -> {
-                val searchView = item?.actionView as SearchView
-                searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                    override fun onQueryTextSubmit(p0: String?): Boolean {
-                        return false
-                    }
-
-                    override fun onQueryTextChange(newText: String?): Boolean {
-                        Log.d("onQueryTextChange", "query: " + newText)
-                        myAdapter?.filter?.filter(newText)
-                        return true
-                    }
-                })
             }
         }
 
@@ -198,11 +243,13 @@ class ActivityDashboard() : AppCompatActivity(), NavigationView.OnNavigationItem
             }
 
             R.id.menu_remainder -> {
-
+                //myWorkManager()
             }
 
             R.id.menu_label -> {
-
+                val fragmentManager = supportFragmentManager
+                val fragmentTransaction = fragmentManager.beginTransaction()
+                fragmentTransaction.replace(R.id.fragmentcontainer1, FragmentLabel()).commit()
             }
 
             R.id.menu_addLabel -> {
@@ -213,7 +260,10 @@ class ActivityDashboard() : AppCompatActivity(), NavigationView.OnNavigationItem
             }
 
             R.id.menu_archive -> {
-
+                Toast.makeText(applicationContext, "Clicked on add Label", Toast.LENGTH_LONG).show()
+                val fragmentManager = supportFragmentManager
+                val fragmentTransaction = fragmentManager.beginTransaction()
+                fragmentTransaction.replace(R.id.fragmentcontainer1, FragmentArchive()).commit()
             }
 
             R.id.menu_trash -> {
@@ -232,7 +282,7 @@ class ActivityDashboard() : AppCompatActivity(), NavigationView.OnNavigationItem
 
     //Function to fetch data from firestore
 
-    private fun getNotes() {
+    fun getNotesFromFirestore() {
         noteViewModel.fetchNote()
 
         noteViewModel.getNoteStatus.observe(this, androidx.lifecycle.Observer { noteLists ->
@@ -246,20 +296,19 @@ class ActivityDashboard() : AppCompatActivity(), NavigationView.OnNavigationItem
                 noteResults.addAll(noteList)
                 myAdapter = Adapter(noteList, this)
                 recyclerView.adapter = myAdapter
+                myAdapter.notifyDataSetChanged()
             }
-
         })
+    }
 
-        /*private fun filterList(newText: String) {
-        val filteredList: MutableList<Note> = mutableListOf()
-        for (singleNote in noteList) {
-            if (singleNote.title.toLowerCase().contains(newText.toLowerCase(Locale.ROOT))
-                || singleNote.content.toLowerCase().contains(newText.toLowerCase(Locale.ROOT))
-            ) {
-                filteredList.add(singleNote)
-            }
-        }
-        myAdapter.filterList(filteredList)
-    }*/
+    private fun getNotesFromSqlite() {
+
+        progressBar.setVisibility(View.GONE)
+        allNotes = dataBaseHelper.getAll()
+        noteResults = allNotes
+        myAdapter = Adapter(allNotes, this)
+        recyclerView.adapter = myAdapter
+        myAdapter.notifyDataSetChanged()
+
     }
 }

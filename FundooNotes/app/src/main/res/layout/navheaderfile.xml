@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="200dp"
     android:orientation="vertical"
-    android:background="#1E1313">
+    android:background="@color/skyblue">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Fundoo Notes"
         android:layout_marginStart="20dp"
-        android:textColor="#2554C7"
         android:layout_marginTop="30dp"
         android:layout_marginBottom="30dp"
-        android:textStyle="bold"
-        android:textSize="30dp">
+        android:fontFamily="@font/faster_one"
+        android:paddingTop="80dp"
+        android:text="Fundoo Notes"
+        android:textColor="#2554C7"
+        android:textSize="30dp"
+        android:textStyle="bold">
 
     </TextView>
 

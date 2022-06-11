@@ -91,8 +91,10 @@ class FragmentLogin : Fragment() {
         })
 
         mLoginBtn.setOnClickListener(View.OnClickListener {
+
             val email: String = mLoginEmail.getText().toString().trim()
             val password: String = mLoginPassword.getText().toString().trim()
+            var returnSecureToken: Boolean = true
 
             if (email.isEmpty() || password.isEmpty()) {
                 Toast.makeText(
@@ -107,7 +109,8 @@ class FragmentLogin : Fragment() {
                     if (it.status) {
                         checkEmailVerification()
                         Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
-                        sharedViewModel.setGotoHomePageStatus(true)
+                        val intent: Intent = Intent(activity, ActivityDashboard::class.java)
+                        startActivity(intent)
 
                     } else {
                         Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
@@ -159,13 +162,13 @@ class FragmentLogin : Fragment() {
         var firebaseUser = FirebaseAuth.getInstance().getCurrentUser()
 
         if (firebaseUser != null) {
-            if (firebaseUser?.isEmailVerified == true) {
+            if (firebaseUser.isEmailVerified) {
                 Toast.makeText(
                     getContext(), "Logged In",
                     Toast.LENGTH_SHORT
                 ).show()
 
-                getActivity()?.getFragmentManager()?.popBackStack()
+                activity?.getFragmentManager()?.popBackStack()
                 val intent: Intent = Intent(getActivity(), ActivityDashboard::class.java)
                 startActivity(intent)
             }

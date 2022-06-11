@@ -15,7 +15,15 @@ class LoginViewModel(val userAuthService: UserAuthService) : ViewModel() {
             if(it.status){
                 _loginStatus.value = it
             }
-
         }
     }
+
+    fun userLoginWithRestApi(email: String, password: String){
+        userAuthService.loginWithRestApi(email, password){
+            if(it.status){
+                _loginStatus.value = it
+            }
+        }
+    }
+
 }
